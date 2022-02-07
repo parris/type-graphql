@@ -677,11 +677,13 @@ export abstract class SchemaGenerator {
             if (Array.isArray(topics) && topics.length === 0) {
               throw new MissingSubscriptionTopicsError(handler.target, handler.methodName);
             }
-            return pubSub.asyncIterator(topics);
+            /* @ts-ignore */
+            return pubSub.asyncIterator(topics, { context });
           };
         } else {
           const topics = handler.topics!;
-          pubSubIterator = () => pubSub.asyncIterator(topics);
+          /* @ts-ignore */
+          pubSubIterator = (_payload, _args, context) => pubSub.asyncIterator(topics, { context });
         }
 
         subscribeFn = handler.filter
